@@ -1,3 +1,4 @@
 import sudoku
 
-sudoku.timer(True)
+t = sudoku.DrawBoardBase()
+sudoku.Draw(t)
