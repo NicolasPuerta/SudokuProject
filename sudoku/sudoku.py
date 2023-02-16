@@ -12,19 +12,27 @@ def play():
     bordplayed = boardbase[1]
     Draw(bordplayed)
     while True:
-        modify = str(input("digita las cordenadas y el numero de esta forma columna-fila-numero: "))
-        modify = modify.split('-')
-        for i in range(len(modify)):
-            modify[i]=int(modify[i]) 
-        bordplayed = ModifyBoard(bordplayed,modify,bordpermanent)
+        try:
+            modify = str(input("digita las cordenadas y el numero de esta forma columna-fila-numero: "))
+            if(ExitGame(modify)):
+                break
+            modify = modify.split('-')
+            for i in range(len(modify)):
+                modify[i]=int(modify[i]) 
+            bordplayed = ModifyBoard(bordplayed,modify,bordpermanent)
+        except:
+            print('no mano eso no es un numero')
         try:
             os.system('cls')
         except:
             os.system('clear')
         Draw(bordplayed)
-        if not NkowIfEnd(bordplayed):
+        if NkowIfEnd(bordplayed):
             End(ini)
-        break
+            break
+
+def ExitGame(word):
+    return word.lower()=='exit'
 
 def NkowIfEnd(base):
     for i in range(len(base)):
@@ -32,8 +40,6 @@ def NkowIfEnd(base):
             if FindSimilar(base,'',i,j):
                 return True
     return False
-
-
 
 def End(ini):
     try:
@@ -96,7 +102,7 @@ def Draw(base):
     print(display)
 
 def FindSimilar(base,unknown,column,row):
-    if unknown in base[column]: return True
+    if unknown in base[column] : return True
     y=[fila[row] for fila in base]
     if unknown in y : return True
     return False
@@ -104,7 +110,8 @@ def FindSimilar(base,unknown,column,row):
 def ModifyBoard(base,lista,basepermanent):
     if FindSimilar(base,int(lista[2]),int(lista[0]),int(lista[1]))==True or basepermanent[lista[0]][lista[1]]!=' ':
         return base
-    elif FindSimilar(base,int(lista[2]),int(lista[0]),int(lista[1]))==False and basepermanent[lista[0]][lista[1]]==' ' and (lista[2]<=9 and lista[2]>=1):
+    elif FindSimilar(base,int(lista[2]),int(lista[0]),int(lista[1]))==False and basepermanent[lista[0]][lista[1]]==' ' and (lista[2]<=9 and lista[2]>=0):
+        if lista[2]==0: lista[2]=' '
         base[lista[0]][lista[1]]=lista[2]
         return base
     return base
@@ -146,5 +153,7 @@ def DrawRecord(lista):
     return display
 
 if __name__ == '__main__':
-    timer(True)
+    play()
+
+
 
